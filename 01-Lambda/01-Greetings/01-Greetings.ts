@@ -1,10 +1,10 @@
 import { APIGatewayEvent, APIGatewayProxyResult } from '../02-ImageResize/node_modules/@types/aws-lambda'
 
 interface LanguagesGreet {
-    [key: string] : string
+    [key: string]: string
 }
 
-const language : LanguagesGreet = {
+const language: LanguagesGreet = {
     'en': 'Hello',
     'hi': 'Namaste',
     'fr': 'Bonjour'
@@ -13,10 +13,11 @@ const language : LanguagesGreet = {
 export const handler = async (event: APIGatewayEvent, response: APIGatewayProxyResult): Promise<APIGatewayProxyResult> => {
     try {
         let name = event.pathParameters?.name
-        let lang : string = event.queryStringParameters?.language || 'en'
+        let lang: string = event.queryStringParameters?.language || 'en'
 
         return {
             statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify({
                 message: `${language[lang]}, ${name}`
             })
@@ -27,6 +28,7 @@ export const handler = async (event: APIGatewayEvent, response: APIGatewayProxyR
 
         const response: APIGatewayProxyResult = {
             statusCode: 500,
+            headers: { 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify({ error: 'Internal Server Error' }),
         };
 
