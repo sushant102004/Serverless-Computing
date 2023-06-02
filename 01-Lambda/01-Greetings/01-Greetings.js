@@ -12,6 +12,7 @@ const handler = async (event, response) => {
         let lang = event.queryStringParameters?.language || 'en';
         return {
             statusCode: 200,
+            headers: { 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify({
                 message: `${language[lang]}, ${name}`
             })
@@ -21,6 +22,7 @@ const handler = async (event, response) => {
         console.error('Error:', err);
         const response = {
             statusCode: 500,
+            headers: { 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify({ error: 'Internal Server Error' }),
         };
         return response;

@@ -1,4 +1,4 @@
-import { APIGatewayEvent, APIGatewayProxyResult } from '../02-ImageResize/node_modules/@types/aws-lambda'
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 interface LanguagesGreet {
     [key: string]: string
