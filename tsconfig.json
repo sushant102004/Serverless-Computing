@@ -12,5 +12,5 @@
     "forceConsistentCasingInFileNames": true, 
     "isolatedModules": true, 
   },
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "exclude": ["01-Lambda/02-ImageResize/node_modules", "**/*.test.ts"]
 }
