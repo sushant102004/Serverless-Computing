@@ -1,4 +1,4 @@
-import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocument, PutCommandInput } from "@aws-sdk/lib-dynamodb";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 
 const region = 'ap-south-1'
@@ -52,20 +52,81 @@ const docClient = DynamoDBDocument.from(new DynamoDB({ region }))
 
 //////////////////////////////////////
 
-docClient.put({
-    TableName: 'notes_SDK', Item: {
+// docClient.put({
+//     TableName: 'notes_SDK', Item: {
+//         user_id: 'cefd32cds',
+//         timestamp: Date.now(),
+//         cat: 'DBMS',
+//         content: `This is sample content of a note.`,
+//         note_id: Math.floor(Date.now() * Math.random()),
+//         title: 'Company DB in MySQL',
+//         username: 'sushant102004'
+//     }
+// }, (err, data) => {
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log(data)
+//     }
+// })
+
+
+// Conditional Write Operations
+
+
+const putParams: PutCommandInput = {
+    TableName: 'notes_SDK',
+    Item: {
         user_id: 'cefd32cds',
         timestamp: Date.now(),
-        cat: 'DBMS',
+        cat: 'DAA',
         content: `This is sample content of a note.`,
-        note_id: Math.floor(Date.now() * Math.random()),
-        title: 'Company DB in MySQL',
+        note_id: '1150578655767',
+        title: 'DAA Notes',
         username: 'sushant102004'
+    },
+
+    /*
+        ConditionExpression will return true if item with same note_id is already present.
+        Then it will reject the put request.
+    */
+
+    ConditionExpression: 'note_id = :expectedValue',
+    ExpressionAttributeValues: {
+        ':expectedValue': '1150578655767'
     }
-}, (err, data) => {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log(data)
-    }
-})
+}
+
+// docClient.put(putParams, (err, result) => {
+//     if (err) {
+//         console.log('Element with same note_id is already present.')
+//         return
+//     } else {
+//         console.log(result?.Attributes)
+//     }
+// })
+
+// docClient.get({ TableName: 'notes_SDK', Key: { user_id: 'cefd32cds', timestamp: 1686569716618 }
+// }, (err, result) => {
+//     if(err) {
+//         console.log(err)
+//         return
+//     } else {
+//         console.log(result?.Item)
+//     }
+// })
+
+
+// Querying Data
+
+// docClient.query({
+//     TableName: 'notes_SDK',
+//     KeyConditionExpression: 'user_id = :user_id',
+
+//     ExpressionAttributeValues: {
+//         ':user_id': 'cefd32cds'
+//     }
+// }, (err, result) => {
+//     if(err) console.log(err)
+//     else console.log(result?.Items)
+// })
