@@ -1,0 +1,26 @@
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    MemorySize: 128
+    Runtime: nodejs18
+    Timeout: 5
+Resources:
+  eventLogger:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: logger.handler
+      Events:
+        GetLogs:
+          Type: Api
+          Properties:
+            Path: /getLogs
+            Method: get
+        FileUpload:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: MyBucket
+            Events: s3:ObjectCreated:*
+      CodeUri: s3://sushant-sam-bucket/134101225a73dc84970723c8daa90105
+  MyBucket:
+    Type: AWS::S3::Bucket
